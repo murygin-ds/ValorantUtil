@@ -1,0 +1,873 @@
+definitions:
+  response.ErrorResponse:
+    properties:
+      details: {}
+      message:
+        type: string
+      meta: {}
+    type: object
+  response.Response:
+    properties:
+      error:
+        $ref: '#/definitions/response.ErrorResponse'
+      success:
+        type: boolean
+    type: object
+  riot.authURLResponse:
+    properties:
+      auth_url:
+        type: string
+      error:
+        $ref: '#/definitions/response.ErrorResponse'
+      success:
+        type: boolean
+    type: object
+  riot.linkRiotAccountResponse:
+    properties:
+      error:
+        $ref: '#/definitions/response.ErrorResponse'
+      puuid:
+        type: string
+      region:
+        type: string
+      success:
+        type: boolean
+    type: object
+  riot.riotCallbackRequest:
+    properties:
+      access_token:
+        type: string
+      id_token:
+        type: string
+    required:
+    - access_token
+    type: object
+  riot.riotLoginCaptchaRequest:
+    properties:
+      captcha_token:
+        type: string
+      password:
+        type: string
+      session_id:
+        type: string
+      username:
+        type: string
+    required:
+    - captcha_token
+    - password
+    - session_id
+    - username
+    type: object
+  riot.riotLoginChallengeResponse:
+    properties:
+      code_length:
+        type: integer
+      email:
+        description: MFA
+        type: string
+      error:
+        $ref: '#/definitions/response.ErrorResponse'
+      hcaptcha_key:
+        description: Captcha
+        type: string
+      method:
+        type: string
+      session_id:
+        type: string
+      status:
+        type: string
+      success:
+        type: boolean
+    type: object
+  riot.riotLoginMFARequest:
+    properties:
+      code:
+        type: string
+      session_id:
+        type: string
+    required:
+    - code
+    - session_id
+    type: object
+  riot.riotLoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  riot.submitRedirectURLRequest:
+    properties:
+      redirect_url:
+        type: string
+    required:
+    - redirect_url
+    type: object
+  users.accountDTO:
+    properties:
+      game_name:
+        type: string
+      id:
+        type: integer
+      puuid:
+        type: string
+      region:
+        type: string
+      rr:
+        type: integer
+      shard:
+        type: string
+      tag_line:
+        type: string
+      tier:
+        type: integer
+    type: object
+  users.authUserRequest:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+  users.authUserResponse:
+    properties:
+      error:
+        $ref: '#/definitions/response.ErrorResponse'
+      login:
+        type: string
+      success:
+        type: boolean
+    type: object
+  users.getAccountsResponse:
+    properties:
+      accounts:
+        items:
+          $ref: '#/definitions/users.accountDTO'
+        type: array
+      error:
+        $ref: '#/definitions/response.ErrorResponse'
+      success:
+        type: boolean
+    type: object
+  users.meResponse:
+    properties:
+      error:
+        $ref: '#/definitions/response.ErrorResponse'
+      id:
+        type: integer
+      login:
+        type: string
+      success:
+        type: boolean
+    type: object
+  valorant.bundleDTO:
+    properties:
+      expires_in_seconds:
+        type: integer
+      image:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/valorant.bundleItem'
+        type: array
+      name:
+        type: string
+      total_base_price:
+        type: integer
+      total_discount_percent:
+        type: number
+      total_discounted_price:
+        type: integer
+    type: object
+  valorant.bundleItem:
+    properties:
+      base_price:
+        type: integer
+      discount_percent:
+        type: number
+      discounted_price:
+        type: integer
+      image:
+        type: string
+      is_promo:
+        type: boolean
+      name:
+        type: string
+    type: object
+  valorant.getAccountResponse:
+    properties:
+      error:
+        $ref: '#/definitions/response.ErrorResponse'
+      skins:
+        items:
+          $ref: '#/definitions/valorant.skinDTO'
+        type: array
+      success:
+        type: boolean
+    type: object
+  valorant.getDailyStoreResponse:
+    properties:
+      accessories:
+        items:
+          $ref: '#/definitions/valorant.storeItem'
+        type: array
+      bundles:
+        items:
+          $ref: '#/definitions/valorant.bundleDTO'
+        type: array
+      error:
+        $ref: '#/definitions/response.ErrorResponse'
+      store:
+        items:
+          $ref: '#/definitions/valorant.storeItem'
+        type: array
+      success:
+        type: boolean
+    type: object
+  valorant.getMMRResponse:
+    properties:
+      error:
+        $ref: '#/definitions/response.ErrorResponse'
+      mmr:
+        $ref: '#/definitions/valorant.mmrInfo'
+      success:
+        type: boolean
+    type: object
+  valorant.getMatchHistoryResponse:
+    properties:
+      error:
+        $ref: '#/definitions/response.ErrorResponse'
+      matches:
+        items:
+          $ref: '#/definitions/valorant.matchDTO'
+        type: array
+      success:
+        type: boolean
+    type: object
+  valorant.getWalletResponse:
+    properties:
+      error:
+        $ref: '#/definitions/response.ErrorResponse'
+      success:
+        type: boolean
+      wallet:
+        $ref: '#/definitions/wallet.Wallet'
+    type: object
+  valorant.matchDTO:
+    properties:
+      duration_ms:
+        type: integer
+      kills:
+        items:
+          $ref: '#/definitions/valorant.matchKillDTO'
+        type: array
+      map_id:
+        type: string
+      match_id:
+        type: string
+      played_at:
+        type: string
+      players:
+        items:
+          $ref: '#/definitions/valorant.matchPlayerDTO'
+        type: array
+      queue_id:
+        type: string
+      team_blue_rounds_won:
+        type: integer
+      team_red_rounds_won:
+        type: integer
+      team_red_won:
+        type: boolean
+    type: object
+  valorant.matchKillDTO:
+    properties:
+      assistants:
+        items:
+          type: string
+        type: array
+      killer:
+        type: string
+      round:
+        type: integer
+      victim:
+        type: string
+    type: object
+  valorant.matchPlayerDTO:
+    properties:
+      agent_icon:
+        type: string
+      agent_name:
+        type: string
+      assists:
+        type: integer
+      character_id:
+        type: string
+      deaths:
+        type: integer
+      kills:
+        type: integer
+      name:
+        description: '"GameName#TagLine"'
+        type: string
+      puuid:
+        type: string
+      score:
+        type: integer
+      team:
+        type: string
+    type: object
+  valorant.mmrInfo:
+    properties:
+      last_map_id:
+        type: string
+      last_match_id:
+        type: string
+      ranked_rating:
+        type: integer
+      rr_change:
+        type: integer
+      tier:
+        type: integer
+    type: object
+  valorant.skinDTO:
+    properties:
+      icon:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  valorant.storeItem:
+    properties:
+      image:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+    type: object
+  wallet.Wallet:
+    properties:
+      kingdom_credits:
+        type: integer
+      radianite_points:
+        type: integer
+      valorant_points:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /v1/riot/auth/submit-url:
+    post:
+      consumes:
+      - application/json
+      description: Принимает URL, скопированный из браузера после авторизации через
+        Riot.
+      parameters:
+      - description: URL из браузера после авторизации
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/riot.submitRedirectURLRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Аккаунт успешно привязан
+          schema:
+            $ref: '#/definitions/riot.linkRiotAccountResponse'
+        "400":
+          description: Некорректный запрос или токен не найден
+          schema:
+            $ref: '#/definitions/riot.linkRiotAccountResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/riot.linkRiotAccountResponse'
+      security:
+      - CookieAuth: []
+      summary: Завершить OAuth-привязку через вставку URL
+      tags:
+      - Riot
+  /v1/riot/auth/url:
+    get:
+      description: Генерирует OAuth URL на страницу входа Riot. Откройте эту ссылку
+        в браузере,
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OAuth ссылка сформирована
+          schema:
+            $ref: '#/definitions/riot.authURLResponse'
+        "500":
+          description: Ошибка генерации ссылки
+          schema:
+            $ref: '#/definitions/riot.authURLResponse'
+      security:
+      - CookieAuth: []
+      summary: Получить ссылку для авторизации через Riot
+      tags:
+      - Riot
+  /v1/riot/callback:
+    post:
+      consumes:
+      - application/json
+      description: Принимает токены от клиентского OAuth-flow и привязывает аккаунт
+      parameters:
+      - description: OAuth токены
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/riot.riotCallbackRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Аккаунт успешно привязан
+          schema:
+            $ref: '#/definitions/riot.linkRiotAccountResponse'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/riot.linkRiotAccountResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/riot.linkRiotAccountResponse'
+      security:
+      - CookieAuth: []
+      summary: Привязка Riot аккаунта через OAuth
+      tags:
+      - Riot
+  /v1/riot/login:
+    post:
+      consumes:
+      - application/json
+      description: Авторизует пользователя на серверах Riot по логину и паролю.
+      parameters:
+      - description: Данные входа в Riot
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/riot.riotLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Требуется капча или 2FA
+          schema:
+            $ref: '#/definitions/riot.riotLoginChallengeResponse'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/riot.linkRiotAccountResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/riot.linkRiotAccountResponse'
+      security:
+      - CookieAuth: []
+      summary: Прямой вход через Riot аккаунт
+      tags:
+      - Riot
+  /v1/riot/login/captcha:
+    post:
+      consumes:
+      - application/json
+      description: Повторяет авторизацию с решенной hcaptcha
+      parameters:
+      - description: session_id, учетные данные и токен hcaptcha
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/riot.riotLoginCaptchaRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Требуется 2FA после капчи
+          schema:
+            $ref: '#/definitions/riot.riotLoginChallengeResponse'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/riot.linkRiotAccountResponse'
+        "401":
+          description: Сессия не найдена или истекла
+          schema:
+            $ref: '#/definitions/riot.linkRiotAccountResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/riot.linkRiotAccountResponse'
+      security:
+      - CookieAuth: []
+      summary: Отправка решения капчи для входа в Riot
+      tags:
+      - Riot
+  /v1/riot/login/mfa:
+    post:
+      consumes:
+      - application/json
+      description: Принимает код из email/authenticator для завершения Riot-авторизации
+      parameters:
+      - description: session_id из предыдущего шага и код 2FA
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/riot.riotLoginMFARequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Неверный код - повторите попытку
+          schema:
+            $ref: '#/definitions/riot.riotLoginChallengeResponse'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/riot.linkRiotAccountResponse'
+        "401":
+          description: Сессия не найдена или истекла
+          schema:
+            $ref: '#/definitions/riot.linkRiotAccountResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/riot.linkRiotAccountResponse'
+      security:
+      - CookieAuth: []
+      summary: Подтверждение 2FA кода для входа в Riot
+      tags:
+      - Riot
+  /v1/users/accounts:
+    get:
+      description: Возвращает список аккаунтов Valorant, принадлежащих авторизованному
+        пользователю.
+      parameters:
+      - default: 100
+        description: Максимальное количество записей
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: Смещение для пагинации
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список аккаунтов успешно получен
+          schema:
+            $ref: '#/definitions/users.getAccountsResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/users.getAccountsResponse'
+      security:
+      - CookieAuth: []
+      summary: Получение списка аккаунтов пользователя
+      tags:
+      - Users
+  /v1/users/login:
+    post:
+      consumes:
+      - application/json
+      description: Выполняет вход пользователя по логину и паролю, устанавливает cookies
+        авторизации
+      parameters:
+      - description: Данные для входа пользователя
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/users.authUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Пользователь успешно авторизован
+          schema:
+            $ref: '#/definitions/users.authUserResponse'
+        "400":
+          description: Некорректные данные в запросе
+          schema:
+            $ref: '#/definitions/users.authUserResponse'
+        "401":
+          description: Неверный логин или пароль
+          schema:
+            $ref: '#/definitions/users.authUserResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/users.authUserResponse'
+      summary: Аутентификация пользователя
+      tags:
+      - Users
+  /v1/users/logout:
+    post:
+      description: Удаляет refresh токен из Redis и очищает cookies авторизации
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Выход выполнен успешно
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - CookieAuth: []
+      summary: Выход из системы
+      tags:
+      - Users
+  /v1/users/me:
+    get:
+      description: Возвращает данные авторизованного пользователя
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Данные пользователя
+          schema:
+            $ref: '#/definitions/users.meResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/users.meResponse'
+      security:
+      - CookieAuth: []
+      summary: Информация о текущем пользователе
+      tags:
+      - Users
+  /v1/users/refresh:
+    post:
+      description: Обновляет access токен используя refresh токен из cookie. Ротирует
+        refresh токен.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Токен успешно обновлен
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Refresh токен отсутствует или недействителен
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Обновление access токена
+      tags:
+      - Users
+  /v1/users/register:
+    post:
+      consumes:
+      - application/json
+      description: Создает нового пользователя с указанным логином и паролем, устанавливает
+        cookies авторизации
+      parameters:
+      - description: Данные для регистрации пользователя
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/users.authUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Пользователь успешно зарегистрирован
+          schema:
+            $ref: '#/definitions/users.authUserResponse'
+        "400":
+          description: Некорректные данные в запросе
+          schema:
+            $ref: '#/definitions/users.authUserResponse'
+        "500":
+          description: Ошибка сервера при создании пользователя
+          schema:
+            $ref: '#/definitions/users.authUserResponse'
+      summary: Регистрация нового пользователя
+      tags:
+      - Users
+  /v1/valorant/account/{puuid}:
+    get:
+      description: Возвращает список скинов игрока с именем и иконкой.
+      parameters:
+      - description: UUID игрока
+        in: path
+        name: puuid
+        required: true
+        type: string
+      - description: Принудительное обновление
+        in: query
+        name: force
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/valorant.getAccountResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/valorant.getAccountResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/valorant.getAccountResponse'
+      security:
+      - CookieAuth: []
+      summary: Получить скины Valorant аккаунта
+      tags:
+      - Valorant
+  /v1/valorant/matches/{puuid}:
+    get:
+      description: Возвращает последние матчи со статистикой игроков и дуэлями.
+      parameters:
+      - description: UUID игрока
+        in: path
+        name: puuid
+        required: true
+        type: string
+      - description: Принудительное обновление (игнорировать кэш)
+        in: query
+        name: force
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/valorant.getMatchHistoryResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/valorant.getMatchHistoryResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/valorant.getMatchHistoryResponse'
+      security:
+      - CookieAuth: []
+      summary: История матчей игрока
+      tags:
+      - Valorant
+  /v1/valorant/mmr/{puuid}:
+    get:
+      description: Возвращает информацию о ранге, рейтинге и последнем конкурентном
+        обновлении игрока
+      parameters:
+      - description: UUID игрока
+        in: path
+        name: puuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: MMR успешно получен
+          schema:
+            $ref: '#/definitions/valorant.getMMRResponse'
+        "401":
+          description: Не авторизован - сессия истекла
+          schema:
+            $ref: '#/definitions/valorant.getMMRResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/valorant.getMMRResponse'
+      security:
+      - CookieAuth: []
+      summary: Получить MMR и ранг игрока
+      tags:
+      - Valorant
+  /v1/valorant/store/{puuid}:
+    get:
+      description: Получает информацию о ежедневном магазине для конкретного пользователя
+        по его PUUID
+      parameters:
+      - description: Принудительное обновление (игнорировать кэш)
+        in: query
+        name: force
+        type: boolean
+      - description: UUID игрока
+        in: path
+        name: puuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Магазин успешно получен
+          schema:
+            $ref: '#/definitions/valorant.getDailyStoreResponse'
+        "401":
+          description: Не авторизован - сессия истекла или недействительна
+          schema:
+            $ref: '#/definitions/valorant.getDailyStoreResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/valorant.getDailyStoreResponse'
+      security:
+      - CookieAuth: []
+      summary: Получить ежедневный магазин пользователя
+      tags:
+      - Valorant
+  /v1/valorant/wallet/{puuid}:
+    get:
+      description: Возвращает количество Valorant Points (VP), Radianite Points и
+        Kingdom Credits игрока
+      parameters:
+      - description: UUID игрока
+        in: path
+        name: puuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Баланс успешно получен
+          schema:
+            $ref: '#/definitions/valorant.getWalletResponse'
+        "401":
+          description: Не авторизован - сессия истекла
+          schema:
+            $ref: '#/definitions/valorant.getWalletResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/valorant.getWalletResponse'
+      security:
+      - CookieAuth: []
+      summary: Получить баланс кошелька игрока
+      tags:
+      - Valorant
+securityDefinitions:
+  CookieAuth:
+    in: cookie
+    name: access_token
+    type: apiKey
+swagger: "2.0"

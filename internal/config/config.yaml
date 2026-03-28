@@ -1,0 +1,49 @@
+server:
+  addr: "0.0.0.0"
+  port: 8080
+  mode: "release"
+  secure: false
+  read_timeout: 120
+  write_timeout: 120
+  idle_timeout: 60
+
+postgres:
+  host: "db"
+  port: 5432
+  user: ""
+  password: ""
+  dbname: valorant_util
+  ssl_mode: disable
+
+  pool:
+    max_connections: 10
+    min_connections: 1
+    max_connection_lifetime: 3600
+    max_connection_idle_time: 300
+
+redis:
+  host: "redis"
+  port: 6379
+  password: ""
+  db: 0
+
+http_client:
+  timeout: 120s
+  transport:
+    max_idle_conns: 10
+    idle_conn_timeout: 30s
+    disable_compression: false
+    tls_handshake_timeout: 10s
+
+logger:
+  level: "info"
+  encoding: "json"
+  filepath: "logs/app.log"
+
+riot:
+  assets_api_base_url: https://valorant-api.com
+
+cors:
+  allowed_origins:
+    - https://valorant.dmurygin.ru
+    - http://localhost:5173

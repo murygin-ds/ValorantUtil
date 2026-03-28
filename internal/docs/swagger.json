@@ -1,0 +1,1347 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/v1/riot/auth/submit-url": {
+            "post": {
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "description": "Принимает URL, скопированный из браузера после авторизации через Riot.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Riot"
+                ],
+                "summary": "Завершить OAuth-привязку через вставку URL",
+                "parameters": [
+                    {
+                        "description": "URL из браузера после авторизации",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/riot.submitRedirectURLRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Аккаунт успешно привязан",
+                        "schema": {
+                            "$ref": "#/definitions/riot.linkRiotAccountResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректный запрос или токен не найден",
+                        "schema": {
+                            "$ref": "#/definitions/riot.linkRiotAccountResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/riot.linkRiotAccountResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/riot/auth/url": {
+            "get": {
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "description": "Генерирует OAuth URL на страницу входа Riot. Откройте эту ссылку в браузере,",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Riot"
+                ],
+                "summary": "Получить ссылку для авторизации через Riot",
+                "responses": {
+                    "200": {
+                        "description": "OAuth ссылка сформирована",
+                        "schema": {
+                            "$ref": "#/definitions/riot.authURLResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка генерации ссылки",
+                        "schema": {
+                            "$ref": "#/definitions/riot.authURLResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/riot/callback": {
+            "post": {
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "description": "Принимает токены от клиентского OAuth-flow и привязывает аккаунт",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Riot"
+                ],
+                "summary": "Привязка Riot аккаунта через OAuth",
+                "parameters": [
+                    {
+                        "description": "OAuth токены",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/riot.riotCallbackRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Аккаунт успешно привязан",
+                        "schema": {
+                            "$ref": "#/definitions/riot.linkRiotAccountResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректный запрос",
+                        "schema": {
+                            "$ref": "#/definitions/riot.linkRiotAccountResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/riot.linkRiotAccountResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/riot/login": {
+            "post": {
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "description": "Авторизует пользователя на серверах Riot по логину и паролю.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Riot"
+                ],
+                "summary": "Прямой вход через Riot аккаунт",
+                "parameters": [
+                    {
+                        "description": "Данные входа в Riot",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/riot.riotLoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Требуется капча или 2FA",
+                        "schema": {
+                            "$ref": "#/definitions/riot.riotLoginChallengeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректный запрос",
+                        "schema": {
+                            "$ref": "#/definitions/riot.linkRiotAccountResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/riot.linkRiotAccountResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/riot/login/captcha": {
+            "post": {
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "description": "Повторяет авторизацию с решенной hcaptcha",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Riot"
+                ],
+                "summary": "Отправка решения капчи для входа в Riot",
+                "parameters": [
+                    {
+                        "description": "session_id, учетные данные и токен hcaptcha",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/riot.riotLoginCaptchaRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Требуется 2FA после капчи",
+                        "schema": {
+                            "$ref": "#/definitions/riot.riotLoginChallengeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректный запрос",
+                        "schema": {
+                            "$ref": "#/definitions/riot.linkRiotAccountResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Сессия не найдена или истекла",
+                        "schema": {
+                            "$ref": "#/definitions/riot.linkRiotAccountResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/riot.linkRiotAccountResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/riot/login/mfa": {
+            "post": {
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "description": "Принимает код из email/authenticator для завершения Riot-авторизации",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Riot"
+                ],
+                "summary": "Подтверждение 2FA кода для входа в Riot",
+                "parameters": [
+                    {
+                        "description": "session_id из предыдущего шага и код 2FA",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/riot.riotLoginMFARequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Неверный код - повторите попытку",
+                        "schema": {
+                            "$ref": "#/definitions/riot.riotLoginChallengeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректный запрос",
+                        "schema": {
+                            "$ref": "#/definitions/riot.linkRiotAccountResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Сессия не найдена или истекла",
+                        "schema": {
+                            "$ref": "#/definitions/riot.linkRiotAccountResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/riot.linkRiotAccountResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/accounts": {
+            "get": {
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "description": "Возвращает список аккаунтов Valorant, принадлежащих авторизованному пользователю.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Получение списка аккаунтов пользователя",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 100,
+                        "description": "Максимальное количество записей",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "Смещение для пагинации",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список аккаунтов успешно получен",
+                        "schema": {
+                            "$ref": "#/definitions/users.getAccountsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/users.getAccountsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/login": {
+            "post": {
+                "description": "Выполняет вход пользователя по логину и паролю, устанавливает cookies авторизации",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Аутентификация пользователя",
+                "parameters": [
+                    {
+                        "description": "Данные для входа пользователя",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/users.authUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Пользователь успешно авторизован",
+                        "schema": {
+                            "$ref": "#/definitions/users.authUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные данные в запросе",
+                        "schema": {
+                            "$ref": "#/definitions/users.authUserResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Неверный логин или пароль",
+                        "schema": {
+                            "$ref": "#/definitions/users.authUserResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/users.authUserResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/logout": {
+            "post": {
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "description": "Удаляет refresh токен из Redis и очищает cookies авторизации",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Выход из системы",
+                "responses": {
+                    "200": {
+                        "description": "Выход выполнен успешно",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/me": {
+            "get": {
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "description": "Возвращает данные авторизованного пользователя",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Информация о текущем пользователе",
+                "responses": {
+                    "200": {
+                        "description": "Данные пользователя",
+                        "schema": {
+                            "$ref": "#/definitions/users.meResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/users.meResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/refresh": {
+            "post": {
+                "description": "Обновляет access токен используя refresh токен из cookie. Ротирует refresh токен.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Обновление access токена",
+                "responses": {
+                    "200": {
+                        "description": "Токен успешно обновлен",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Refresh токен отсутствует или недействителен",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/register": {
+            "post": {
+                "description": "Создает нового пользователя с указанным логином и паролем, устанавливает cookies авторизации",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Регистрация нового пользователя",
+                "parameters": [
+                    {
+                        "description": "Данные для регистрации пользователя",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/users.authUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Пользователь успешно зарегистрирован",
+                        "schema": {
+                            "$ref": "#/definitions/users.authUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные данные в запросе",
+                        "schema": {
+                            "$ref": "#/definitions/users.authUserResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера при создании пользователя",
+                        "schema": {
+                            "$ref": "#/definitions/users.authUserResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/valorant/account/{puuid}": {
+            "get": {
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "description": "Возвращает список скинов игрока с именем и иконкой.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Valorant"
+                ],
+                "summary": "Получить скины Valorant аккаунта",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "UUID игрока",
+                        "name": "puuid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Принудительное обновление",
+                        "name": "force",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/valorant.getAccountResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/valorant.getAccountResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/valorant.getAccountResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/valorant/matches/{puuid}": {
+            "get": {
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "description": "Возвращает последние матчи со статистикой игроков и дуэлями.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Valorant"
+                ],
+                "summary": "История матчей игрока",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "UUID игрока",
+                        "name": "puuid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Принудительное обновление (игнорировать кэш)",
+                        "name": "force",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/valorant.getMatchHistoryResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/valorant.getMatchHistoryResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/valorant.getMatchHistoryResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/valorant/mmr/{puuid}": {
+            "get": {
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "description": "Возвращает информацию о ранге, рейтинге и последнем конкурентном обновлении игрока",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Valorant"
+                ],
+                "summary": "Получить MMR и ранг игрока",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "UUID игрока",
+                        "name": "puuid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "MMR успешно получен",
+                        "schema": {
+                            "$ref": "#/definitions/valorant.getMMRResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Не авторизован - сессия истекла",
+                        "schema": {
+                            "$ref": "#/definitions/valorant.getMMRResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/valorant.getMMRResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/valorant/store/{puuid}": {
+            "get": {
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "description": "Получает информацию о ежедневном магазине для конкретного пользователя по его PUUID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Valorant"
+                ],
+                "summary": "Получить ежедневный магазин пользователя",
+                "parameters": [
+                    {
+                        "type": "boolean",
+                        "description": "Принудительное обновление (игнорировать кэш)",
+                        "name": "force",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "UUID игрока",
+                        "name": "puuid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Магазин успешно получен",
+                        "schema": {
+                            "$ref": "#/definitions/valorant.getDailyStoreResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Не авторизован - сессия истекла или недействительна",
+                        "schema": {
+                            "$ref": "#/definitions/valorant.getDailyStoreResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/valorant.getDailyStoreResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/valorant/wallet/{puuid}": {
+            "get": {
+                "security": [
+                    {
+                        "CookieAuth": []
+                    }
+                ],
+                "description": "Возвращает количество Valorant Points (VP), Radianite Points и Kingdom Credits игрока",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Valorant"
+                ],
+                "summary": "Получить баланс кошелька игрока",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "UUID игрока",
+                        "name": "puuid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Баланс успешно получен",
+                        "schema": {
+                            "$ref": "#/definitions/valorant.getWalletResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Не авторизован - сессия истекла",
+                        "schema": {
+                            "$ref": "#/definitions/valorant.getWalletResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/valorant.getWalletResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "response.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "details": {},
+                "message": {
+                    "type": "string"
+                },
+                "meta": {}
+            }
+        },
+        "response.Response": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/response.ErrorResponse"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "riot.authURLResponse": {
+            "type": "object",
+            "properties": {
+                "auth_url": {
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/response.ErrorResponse"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "riot.linkRiotAccountResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/response.ErrorResponse"
+                },
+                "puuid": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "riot.riotCallbackRequest": {
+            "type": "object",
+            "required": [
+                "access_token"
+            ],
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "id_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "riot.riotLoginCaptchaRequest": {
+            "type": "object",
+            "required": [
+                "captcha_token",
+                "password",
+                "session_id",
+                "username"
+            ],
+            "properties": {
+                "captcha_token": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "session_id": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "riot.riotLoginChallengeResponse": {
+            "type": "object",
+            "properties": {
+                "code_length": {
+                    "type": "integer"
+                },
+                "email": {
+                    "description": "MFA",
+                    "type": "string"
+                },
+                "error": {
+                    "$ref": "#/definitions/response.ErrorResponse"
+                },
+                "hcaptcha_key": {
+                    "description": "Captcha",
+                    "type": "string"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "session_id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "riot.riotLoginMFARequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "session_id"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "session_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "riot.riotLoginRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "riot.submitRedirectURLRequest": {
+            "type": "object",
+            "required": [
+                "redirect_url"
+            ],
+            "properties": {
+                "redirect_url": {
+                    "type": "string"
+                }
+            }
+        },
+        "users.accountDTO": {
+            "type": "object",
+            "properties": {
+                "game_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "puuid": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "rr": {
+                    "type": "integer"
+                },
+                "shard": {
+                    "type": "string"
+                },
+                "tag_line": {
+                    "type": "string"
+                },
+                "tier": {
+                    "type": "integer"
+                }
+            }
+        },
+        "users.authUserRequest": {
+            "type": "object",
+            "properties": {
+                "login": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "users.authUserResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/response.ErrorResponse"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "users.getAccountsResponse": {
+            "type": "object",
+            "properties": {
+                "accounts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/users.accountDTO"
+                    }
+                },
+                "error": {
+                    "$ref": "#/definitions/response.ErrorResponse"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "users.meResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/response.ErrorResponse"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "valorant.bundleDTO": {
+            "type": "object",
+            "properties": {
+                "expires_in_seconds": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/valorant.bundleItem"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "total_base_price": {
+                    "type": "integer"
+                },
+                "total_discount_percent": {
+                    "type": "number"
+                },
+                "total_discounted_price": {
+                    "type": "integer"
+                }
+            }
+        },
+        "valorant.bundleItem": {
+            "type": "object",
+            "properties": {
+                "base_price": {
+                    "type": "integer"
+                },
+                "discount_percent": {
+                    "type": "number"
+                },
+                "discounted_price": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "is_promo": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "valorant.getAccountResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/response.ErrorResponse"
+                },
+                "skins": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/valorant.skinDTO"
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "valorant.getDailyStoreResponse": {
+            "type": "object",
+            "properties": {
+                "accessories": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/valorant.storeItem"
+                    }
+                },
+                "bundles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/valorant.bundleDTO"
+                    }
+                },
+                "error": {
+                    "$ref": "#/definitions/response.ErrorResponse"
+                },
+                "store": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/valorant.storeItem"
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "valorant.getMMRResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/response.ErrorResponse"
+                },
+                "mmr": {
+                    "$ref": "#/definitions/valorant.mmrInfo"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "valorant.getMatchHistoryResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/response.ErrorResponse"
+                },
+                "matches": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/valorant.matchDTO"
+                    }
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "valorant.getWalletResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/response.ErrorResponse"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "wallet": {
+                    "$ref": "#/definitions/wallet.Wallet"
+                }
+            }
+        },
+        "valorant.matchDTO": {
+            "type": "object",
+            "properties": {
+                "duration_ms": {
+                    "type": "integer"
+                },
+                "kills": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/valorant.matchKillDTO"
+                    }
+                },
+                "map_id": {
+                    "type": "string"
+                },
+                "match_id": {
+                    "type": "string"
+                },
+                "played_at": {
+                    "type": "string"
+                },
+                "players": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/valorant.matchPlayerDTO"
+                    }
+                },
+                "queue_id": {
+                    "type": "string"
+                },
+                "team_blue_rounds_won": {
+                    "type": "integer"
+                },
+                "team_red_rounds_won": {
+                    "type": "integer"
+                },
+                "team_red_won": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "valorant.matchKillDTO": {
+            "type": "object",
+            "properties": {
+                "assistants": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "killer": {
+                    "type": "string"
+                },
+                "round": {
+                    "type": "integer"
+                },
+                "victim": {
+                    "type": "string"
+                }
+            }
+        },
+        "valorant.matchPlayerDTO": {
+            "type": "object",
+            "properties": {
+                "agent_icon": {
+                    "type": "string"
+                },
+                "agent_name": {
+                    "type": "string"
+                },
+                "assists": {
+                    "type": "integer"
+                },
+                "character_id": {
+                    "type": "string"
+                },
+                "deaths": {
+                    "type": "integer"
+                },
+                "kills": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "\"GameName#TagLine\"",
+                    "type": "string"
+                },
+                "puuid": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "integer"
+                },
+                "team": {
+                    "type": "string"
+                }
+            }
+        },
+        "valorant.mmrInfo": {
+            "type": "object",
+            "properties": {
+                "last_map_id": {
+                    "type": "string"
+                },
+                "last_match_id": {
+                    "type": "string"
+                },
+                "ranked_rating": {
+                    "type": "integer"
+                },
+                "rr_change": {
+                    "type": "integer"
+                },
+                "tier": {
+                    "type": "integer"
+                }
+            }
+        },
+        "valorant.skinDTO": {
+            "type": "object",
+            "properties": {
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "valorant.storeItem": {
+            "type": "object",
+            "properties": {
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                }
+            }
+        },
+        "wallet.Wallet": {
+            "type": "object",
+            "properties": {
+                "kingdom_credits": {
+                    "type": "integer"
+                },
+                "radianite_points": {
+                    "type": "integer"
+                },
+                "valorant_points": {
+                    "type": "integer"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "CookieAuth": {
+            "type": "apiKey",
+            "name": "access_token",
+            "in": "cookie"
+        }
+    }
+}

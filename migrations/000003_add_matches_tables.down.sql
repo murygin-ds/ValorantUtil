@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS match_kills;
+DROP TABLE IF EXISTS match_players;
+DROP TABLE IF EXISTS matches;
