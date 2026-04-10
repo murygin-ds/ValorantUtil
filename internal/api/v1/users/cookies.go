@@ -23,7 +23,7 @@ func setAuthCookies(w http.ResponseWriter, accessToken, refreshUUID string) {
 	http.SetCookie(w, &http.Cookie{
 		Name:     "refresh_token",
 		Value:    refreshUUID,
-		Path:     "/v1/users/refresh",
+		Path:     "/",
 		MaxAge:   refreshTokenCookieAge,
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
@@ -42,7 +42,7 @@ func clearAuthCookies(w http.ResponseWriter) {
 	http.SetCookie(w, &http.Cookie{
 		Name:     "refresh_token",
 		Value:    "",
-		Path:     "/v1/users/refresh",
+		Path:     "/",
 		MaxAge:   -1,
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
